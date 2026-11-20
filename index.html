@@ -507,6 +507,17 @@
             <span data-editable-key="navMembersLabel">Member Directory</span>
           </button>
 
+          <button type="button" onclick="switchMainView('friends-dms')" id="nav-btn-friends" class="aqua-btn relative">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="2" y="3" width="12" height="9" fill="#9eff7a" stroke="#166e08"/><rect x="4" y="6" width="8" height="2" fill="#0a64d6"/></svg>
+            <span data-editable-key="navFriendsLabel">Friends &amp; DMs</span>
+            <span id="dm-unread-badge" class="hidden ml-1 px-1.5 py-0.2 bg-[#e02414] text-white text-[10px] rounded-full border border-white">0</span>
+          </button>
+
+          <button type="button" onclick="openMyProfileView()" id="nav-btn-myprofile" class="hidden aqua-btn">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="5" y="2" width="6" height="5" fill="#0a64d6"/><rect x="3" y="8" width="10" height="6" fill="#5ec5ff"/></svg>
+            <span data-editable-key="navMyProfileLabel">My Profile</span>
+          </button>
+
           <button type="button" onclick="switchMainView('inbox')" id="nav-btn-inbox" class="aqua-btn relative">
             <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="1" y="3" width="14" height="10" fill="#ffd43b" stroke="#8a5a00"/><path d="M2 4L8 9L14 4" stroke="#8a5a00" fill="none"/></svg>
             <span data-editable-key="navInboxLabel">System Notices</span>
@@ -594,15 +605,34 @@
               </div>
             </div>
 
+            <!-- Quick Social Stats -->
+            <div class="grid grid-cols-3 gap-1 text-center bg-white/80 p-1.5 rounded-lg border border-[#a8cff2] text-[11px]">
+              <button type="button" onclick="openMyProfileView('friends')" class="hover:bg-[#e1f1ff] rounded p-1 transition">
+                <div id="passport-friends-count" class="font-bold text-[#073778]">0</div>
+                <div class="text-[10px] text-[#3c6ba1]">Friends</div>
+              </button>
+              <button type="button" onclick="openMyProfileView('followers')" class="hover:bg-[#e1f1ff] rounded p-1 transition border-x border-[#cde5fa]">
+                <div id="passport-followers-count" class="font-bold text-[#073778]">0</div>
+                <div class="text-[10px] text-[#3c6ba1]">Followers</div>
+              </button>
+              <button type="button" onclick="openMyProfileView('following')" class="hover:bg-[#e1f1ff] rounded p-1 transition">
+                <div id="passport-following-count" class="font-bold text-[#073778]">0</div>
+                <div class="text-[10px] text-[#3c6ba1]">Following</div>
+              </button>
+            </div>
+
             <!-- Profile Picture & Account Actions -->
             <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" onclick="openMyProfileView()" class="aqua-btn aqua-btn-blue w-full !text-[11px]">
+                <span>My Profile</span>
+              </button>
               <button type="button" onclick="openProfileModal()" class="aqua-btn w-full !text-[11px]">
                 <span data-editable-key="editProfileBtnLabel">Edit Profile</span>
               </button>
-              <button type="button" onclick="logoutUser()" class="aqua-btn aqua-btn-red w-full !text-[11px]">
-                <span data-editable-key="logoutBtnLabel">Log Off</span>
-              </button>
             </div>
+            <button type="button" onclick="logoutUser()" class="aqua-btn aqua-btn-red w-full !text-[11px]">
+              <span data-editable-key="logoutBtnLabel">Log Off</span>
+            </button>
           </div>
         </div>
       </section>
@@ -778,6 +808,46 @@
         </div>
       </div>
 
+      <!-- VIEW 6: MY PROFILE (Bio, Avatar, Status, Followers, Following, Friends) -->
+      <div id="view-my-profile" class="hidden space-y-4">
+        <div class="xp-window">
+          <div class="xp-titlebar">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="5" y="2" width="6" height="5" fill="#fff"/><rect x="3" y="8" width="10" height="6" fill="#5ec5ff"/></svg>
+              <span>My User Profile &amp; Connections</span>
+            </div>
+            <div class="win-controls">
+              <button type="button" class="win-btn win-btn-close" onclick="switchMainView('feed')">
+                <svg width="8" height="8" viewBox="0 0 9 9"><path d="M1.5 1.5L7.5 7.5M7.5 1.5L1.5 7.5" stroke="#fff" stroke-width="1.8"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="my-profile-container" class="p-4 space-y-4">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 7: FRIENDS & PRIVATE DMs -->
+      <div id="view-friends-dms" class="hidden space-y-4">
+        <div class="xp-window">
+          <div class="xp-titlebar">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="2" y="3" width="12" height="9" fill="#9eff7a"/><rect x="4" y="6" width="8" height="2" fill="#003893"/></svg>
+              <span>Friends &amp; Private Direct Messages</span>
+            </div>
+            <div class="win-controls">
+              <button type="button" class="win-btn win-btn-close" onclick="switchMainView('feed')">
+                <svg width="8" height="8" viewBox="0 0 9 9"><path d="M1.5 1.5L7.5 7.5M7.5 1.5L1.5 7.5" stroke="#fff" stroke-width="1.8"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="friends-dms-container" class="p-3.5">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
       <!-- VIEW 4: EXCLUSIVE STAFF STUDIO (Owner, Admin, Moderator ONLY) -->
       <div id="view-staff" class="hidden space-y-4">
         <div class="xp-window">
@@ -816,6 +886,15 @@
                 <textarea id="staff-notice-message" rows="2" placeholder="Write private warning or notice..." class="aero-input !text-xs resize-none" required></textarea>
                 <button type="submit" class="aqua-btn aqua-btn-green">Send Anonymous Important Notice</button>
               </form>
+            </div>
+
+            <!-- 2B. Manage Sent System Notices (Staff Can Delete Any System Notice Sent to Users) -->
+            <div class="p-3.5 rounded-lg bg-white/85 border border-[#8abcf0] space-y-2.5">
+              <h3 class="text-sm font-bold text-[#073a80] border-b border-[#c5e1fa] pb-1">Sent System Notices Log (Staff Moderation)</h3>
+              <p class="text-[11px] text-[#356396]">View or delete any anonymous system messages sent to users.</p>
+              <div id="staff-sent-notices-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                <!-- Rendered dynamically -->
+              </div>
             </div>
 
             <!-- 3. Word Blacklist Filter Manager -->
@@ -1065,6 +1144,14 @@
           <input type="text" id="edit-profile-displayname" required maxlength="32" class="aero-input" />
         </div>
         <div>
+          <label class="block text-xs font-bold text-[#0a3c7d] mb-1">Custom Status:</label>
+          <input type="text" id="edit-profile-status" maxlength="80" placeholder="Set your status..." class="aero-input" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-[#0a3c7d] mb-1">Bio:</label>
+          <textarea id="edit-profile-bio" rows="3" maxlength="240" placeholder="Tell the community about yourself..." class="aero-input resize-none"></textarea>
+        </div>
+        <div>
           <label class="block text-xs font-bold text-[#0a3c7d] mb-1">Upload New Profile Picture:</label>
           <input type="file" accept="image/*" onchange="handleEditAvatarFile(event)" class="aero-input !text-xs !py-1" />
         </div>
@@ -1126,6 +1213,14 @@
         <span class="w-2.5 h-2.5 bg-[#35a832] inline-block"></span>
         <span>Member Directory</span>
       </button>
+      <button type="button" onclick="openMyProfileView(); toggleStartMenu(false)" id="start-menu-profile-btn" class="hidden w-full text-left px-3 py-2 rounded hover:bg-[#d6ecff] font-bold text-[#0a3c7d] flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-[#5ec5ff] inline-block"></span>
+        <span>My Profile</span>
+      </button>
+      <button type="button" onclick="switchMainView('friends-dms'); toggleStartMenu(false)" class="w-full text-left px-3 py-2 rounded hover:bg-[#d6ecff] font-bold text-[#0a3c7d] flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-[#48d128] inline-block"></span>
+        <span>Friends &amp; Private DMs</span>
+      </button>
       <button type="button" onclick="switchMainView('inbox'); toggleStartMenu(false)" class="w-full text-left px-3 py-2 rounded hover:bg-[#d6ecff] font-bold text-[#0a3c7d] flex items-center gap-2">
         <span class="w-2.5 h-2.5 bg-[#f5b800] inline-block"></span>
         <span>System Notices Inbox</span>
@@ -1166,6 +1261,12 @@
         <button type="button" onclick="switchMainView('members')" id="task-tab-members" class="taskbar-tab">
           <span>Members</span>
         </button>
+        <button type="button" onclick="switchMainView('friends-dms')" id="task-tab-friends-dms" class="taskbar-tab">
+          <span>Friends &amp; DMs</span>
+        </button>
+        <button type="button" onclick="openMyProfileView()" id="task-tab-my-profile" class="taskbar-tab">
+          <span>My Profile</span>
+        </button>
         <button type="button" onclick="switchMainView('inbox')" id="task-tab-inbox" class="taskbar-tab">
           <span>System Notices</span>
         </button>
@@ -1193,6 +1294,7 @@
       ANNOUNCEMENTS: 'aerosphere_announcements_v1',
       NOTICES: 'aerosphere_notices_v1',
       BLACKLIST: 'aerosphere_blacklist_v1',
+      DMS: 'aerosphere_dms_v1',
       SITE_CONFIG: 'aerosphere_site_config_v1',
       SESSION: 'aerosphere_current_session_v1'
     };
@@ -1243,6 +1345,7 @@
     let announcements = [];
     let notices = [];
     let blacklist = [];
+    let directMessages = [];
     let siteConfig = JSON.parse(JSON.stringify(DEFAULT_SITE_CONFIG));
     let currentUser = null;
 
@@ -1255,6 +1358,8 @@
     let activeAuthorFilterId = '';
     let searchQuery = '';
     let inlineEditEnabled = false;
+    let activeProfileTab = 'friends';
+    let activeDmPartnerId = '';
 
     const MAX_SINGLE_MEDIA_BYTES = 12 * 1024 * 1024; // 12 MB per file guard for browser storage
     const MAX_TOTAL_MEDIA_BYTES = 24 * 1024 * 1024;  // 24 MB combined per post guard
@@ -1320,6 +1425,16 @@
         announcements = JSON.parse(safeGetItem(STORAGE_KEYS.ANNOUNCEMENTS)) || [];
         notices = JSON.parse(safeGetItem(STORAGE_KEYS.NOTICES)) || [];
         blacklist = JSON.parse(safeGetItem(STORAGE_KEYS.BLACKLIST)) || [];
+        directMessages = JSON.parse(safeGetItem(STORAGE_KEYS.DMS)) || [];
+
+        // Normalize user fields (bio, following) and announcement likes
+        users.forEach(u => {
+          if (typeof u.bio !== 'string') u.bio = '';
+          if (!Array.isArray(u.following)) u.following = [];
+        });
+        announcements.forEach(a => {
+          if (!Array.isArray(a.likes)) a.likes = [];
+        });
 
         const savedConfig = JSON.parse(safeGetItem(STORAGE_KEYS.SITE_CONFIG));
         if (savedConfig) {
@@ -1362,6 +1477,7 @@
     function saveAnnouncements() { safeSetItem(STORAGE_KEYS.ANNOUNCEMENTS, JSON.stringify(announcements)); }
     function saveNotices() { safeSetItem(STORAGE_KEYS.NOTICES, JSON.stringify(notices)); }
     function saveBlacklist() { safeSetItem(STORAGE_KEYS.BLACKLIST, JSON.stringify(blacklist)); }
+    function saveDirectMessages() { safeSetItem(STORAGE_KEYS.DMS, JSON.stringify(directMessages)); }
     function saveSiteConfig() { safeSetItem(STORAGE_KEYS.SITE_CONFIG, JSON.stringify(siteConfig)); }
 
     // =========================================================================
@@ -1478,6 +1594,8 @@
           password: password,
           avatar: tempAuthAvatar || avatarUrl || '',
           status: initialStatus,
+          bio: '',
+          following: [],
           role: isOwnerUsername ? 'Owner' : 'Member',
           banned: false,
           joinedAt: new Date().toISOString()
@@ -1561,6 +1679,8 @@
       if (!currentUser) return;
       tempEditAvatar = '';
       document.getElementById('edit-profile-displayname').value = currentUser.displayName;
+      document.getElementById('edit-profile-status').value = currentUser.status || '';
+      document.getElementById('edit-profile-bio').value = currentUser.bio || '';
       document.getElementById('edit-profile-avatar-url').value = currentUser.avatar && !currentUser.avatar.startsWith('data:') ? currentUser.avatar : '';
       document.getElementById('profile-modal').classList.remove('hidden');
     }
@@ -1584,16 +1704,20 @@
       if (!currentUser) return;
 
       const newDisplay = document.getElementById('edit-profile-displayname').value.trim();
+      const newStatus = document.getElementById('edit-profile-status').value.trim();
+      const newBio = document.getElementById('edit-profile-bio').value.trim();
       const newUrl = document.getElementById('edit-profile-avatar-url').value.trim();
 
       if (!newDisplay) return;
-      const blocked = containsBlacklistedWord(newDisplay);
+      const blocked = containsBlacklistedWord(newDisplay) || containsBlacklistedWord(newStatus) || containsBlacklistedWord(newBio);
       if (blocked) {
-        showSystemDialog('Blocked Word', 'That display name contains a word restricted by the platform blacklist.');
+        showSystemDialog('Blocked Word', 'Your display name, status, or bio contains a word restricted by the platform blacklist.');
         return;
       }
 
       currentUser.displayName = newDisplay;
+      currentUser.status = newStatus;
+      currentUser.bio = newBio;
       if (tempEditAvatar) {
         currentUser.avatar = tempEditAvatar;
       } else if (newUrl) {
@@ -1655,19 +1779,21 @@
         return;
       }
 
-      const views = ['feed', 'members', 'inbox', 'staff', 'owner-customizer'];
+      const views = ['feed', 'members', 'inbox', 'my-profile', 'friends-dms', 'staff', 'owner-customizer'];
       views.forEach(v => {
         const el = document.getElementById(`view-${v}`);
         if (el) el.classList.toggle('hidden', v !== viewName);
       });
 
-      ['feed', 'members', 'inbox'].forEach(tab => {
+      ['feed', 'members', 'inbox', 'my-profile', 'friends-dms'].forEach(tab => {
         const taskTab = document.getElementById(`task-tab-${tab}`);
         if (taskTab) taskTab.classList.toggle('active', tab === viewName);
       });
 
       if (viewName === 'members') renderMembersDirectory();
       if (viewName === 'inbox') renderInbox();
+      if (viewName === 'my-profile') renderMyProfile();
+      if (viewName === 'friends-dms') renderFriendsAndDMs();
       if (viewName === 'staff') renderStaffStudio();
       if (viewName === 'owner-customizer') renderOwnerCustomizer();
     }
@@ -2145,6 +2271,8 @@
       const composerWin = document.getElementById('post-composer-window');
       const staffNavBtn = document.getElementById('nav-btn-staff');
       const ownerNavBtn = document.getElementById('nav-btn-owner');
+      const myProfileNavBtn = document.getElementById('nav-btn-myprofile');
+      const startProfileBtn = document.getElementById('start-menu-profile-btn');
       const startStaffBtn = document.getElementById('start-menu-staff-btn');
       const startOwnerBtn = document.getElementById('start-menu-owner-btn');
       const startAuthBtn = document.getElementById('start-menu-auth-btn');
@@ -2155,6 +2283,8 @@
         composerWin.classList.add('hidden');
         staffNavBtn.classList.add('hidden');
         ownerNavBtn.classList.add('hidden');
+        if (myProfileNavBtn) myProfileNavBtn.classList.add('hidden');
+        if (startProfileBtn) startProfileBtn.classList.add('hidden');
         startStaffBtn.classList.add('hidden');
         startOwnerBtn.classList.add('hidden');
 
@@ -2167,6 +2297,8 @@
         loggedOutBox.classList.add('hidden');
         loggedInBox.classList.remove('hidden');
         composerWin.classList.remove('hidden');
+        if (myProfileNavBtn) myProfileNavBtn.classList.remove('hidden');
+        if (startProfileBtn) startProfileBtn.classList.remove('hidden');
 
         document.getElementById('current-user-avatar').src = currentUser.avatar || DEFAULT_AVATAR_SVG;
         document.getElementById('current-user-displayname').textContent = currentUser.displayName;
@@ -2174,6 +2306,11 @@
         document.getElementById('current-user-username').textContent = '@' + currentUser.username;
         document.getElementById('current-user-status-text').textContent = currentUser.status || 'No status set';
         document.getElementById('custom-status-input').value = currentUser.status || '';
+
+        const rels = getUserRelationships(currentUser.id);
+        document.getElementById('passport-friends-count').textContent = rels.friends.length;
+        document.getElementById('passport-followers-count').textContent = rels.followers.length;
+        document.getElementById('passport-following-count').textContent = rels.following.length;
 
         const hasStaff = isStaffUser();
         const hasOwner = isOwnerUser();
@@ -2195,8 +2332,10 @@
 
     function updateUnreadBadge() {
       const badge = document.getElementById('inbox-unread-badge');
+      const dmBadge = document.getElementById('dm-unread-badge');
       if (!currentUser) {
         badge.classList.add('hidden');
+        if (dmBadge) dmBadge.classList.add('hidden');
         return;
       }
       const unreadCount = notices.filter(n => n.recipientId === currentUser.id && !n.read).length;
@@ -2205,6 +2344,16 @@
         badge.classList.remove('hidden');
       } else {
         badge.classList.add('hidden');
+      }
+
+      if (dmBadge) {
+        const unreadDMs = directMessages.filter(m => m.recipientId === currentUser.id && !m.read).length;
+        if (unreadDMs > 0) {
+          dmBadge.textContent = unreadDMs;
+          dmBadge.classList.remove('hidden');
+        } else {
+          dmBadge.classList.add('hidden');
+        }
       }
     }
 
@@ -2246,8 +2395,42 @@
         };
         const canDelete = currentUser && (currentUser.id === post.authorId || isStaffUser());
 
+        const isSelf = currentUser && currentUser.id === post.authorId;
+        const followingAuthor = currentUser && !isSelf && isFollowingUser(currentUser.id, post.authorId);
+        const mutualFriend = currentUser && !isSelf && areFriends(currentUser.id, post.authorId);
+
         return `
           <article class="p-3.5 rounded-lg bg-white/88 border border-[#96c4ed] shadow-xs space-y-2.5">
+            <div class="flex items-start justify-between gap-2 border-b border-[#d6ebff] pb-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <img src="${author.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(author.displayName)}" class="w-9 h-9 rounded-lg border border-[#3e95eb] object-cover shrink-0 bg-[#e6f4ff]" />
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <button type="button" onclick="filterByAuthor('${post.authorId}')" class="font-bold text-xs sm:text-sm text-[#073778] hover:underline truncate">${escapeHTML(author.displayName)}</button>
+                    ${getRoleBadgeHTML(author.role)}
+                    ${mutualFriend ? `<span class="px-1.5 py-0.2 rounded bg-[#d4f8d4] border border-[#24b351] text-[#0d5e24] text-[10px] font-bold">Friends</span>` : ''}
+                    <span class="text-[11px] font-mono text-[#4572a6]">@${escapeHTML(author.username)}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] text-[#4d79ab] flex-wrap">
+                    <span>${formatTimestamp(post.createdAt)}</span>
+                    ${author.status ? `<span class="italic text-[#1a497d] truncate">&bull; ${escapeHTML(author.status)}</span>` : ''}
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                ${currentUser && !isSelf && author.id ? `
+                  <button type="button" onclick="toggleFollowUser('${post.authorId}')" class="aqua-btn ${followingAuthor ? '' : 'aqua-btn-blue'} !py-0.5 !px-2 !text-[10px]">
+                    ${mutualFriend ? 'Friends ✓' : (followingAuthor ? 'Following' : 'Follow')}
+                  </button>
+                ` : ''}
+                ${canDelete ? `
+                  <button type="button" onclick="deletePost('${post.id}')" class="aqua-btn aqua-btn-red !py-0.5 !px-2 !text-[10px]" title="Delete Post">
+                    Delete
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
             <div class="text-xs sm:text-sm text-[#0f2947] whitespace-pre-wrap break-words leading-relaxed">${formatPostBodyWithTags(post.content, post.tags)}</div>
 
             ${(() => {
@@ -2315,23 +2498,44 @@
         return;
       }
 
-      container.innerHTML = users.map(u => `
-        <div class="p-3 rounded-lg bg-white/88 border border-[#96c4ed] flex items-center justify-between gap-2.5 shadow-xs">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <img src="${u.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(u.displayName)}" class="w-12 h-12 rounded-lg border border-[#3e95eb] object-cover shrink-0 bg-[#e6f4ff]" />
-            <div class="min-w-0">
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="font-bold text-sm text-[#073778] truncate">${escapeHTML(u.displayName)}</span>
-                ${getRoleBadgeHTML(u.role)}
-                ${u.banned ? `<span class="px-1.5 py-0.2 rounded bg-[#e02414] text-white text-[10px] font-bold">BANNED</span>` : ''}
+      container.innerHTML = users.map(u => {
+        const isSelf = currentUser && currentUser.id === u.id;
+        const following = currentUser && !isSelf && isFollowingUser(currentUser.id, u.id);
+        const friends = currentUser && !isSelf && areFriends(currentUser.id, u.id);
+        const followsYou = currentUser && !isSelf && isFollowingUser(u.id, currentUser.id);
+        return `
+          <div class="p-3 rounded-lg bg-white/88 border border-[#96c4ed] flex flex-col justify-between gap-2.5 shadow-xs">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <img src="${u.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(u.displayName)}" class="w-12 h-12 rounded-lg border border-[#3e95eb] object-cover shrink-0 bg-[#e6f4ff]" />
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="font-bold text-sm text-[#073778] truncate">${escapeHTML(u.displayName)}</span>
+                  ${getRoleBadgeHTML(u.role)}
+                  ${friends ? `<span class="px-1.5 py-0.2 rounded bg-[#d4f8d4] border border-[#24b351] text-[#0d5e24] text-[10px] font-bold">Friend</span>` : (followsYou ? `<span class="px-1.5 py-0.2 rounded bg-[#e1f1ff] border border-[#6cb0ed] text-[#083b80] text-[10px] font-semibold">Follows you</span>` : '')}
+                  ${u.banned ? `<span class="px-1.5 py-0.2 rounded bg-[#e02414] text-white text-[10px] font-bold">BANNED</span>` : ''}
+                </div>
+                <p class="text-[11px] font-mono text-[#4572a6] truncate">@${escapeHTML(u.username)}</p>
+                <p class="text-[11px] text-[#1a497d] italic truncate mt-0.5">${u.status ? escapeHTML(u.status) : 'No status set'}</p>
+                ${u.bio ? `<p class="text-[11px] text-[#284c75] mt-1 line-clamp-2 break-words">${escapeHTML(u.bio)}</p>` : ''}
               </div>
-              <p class="text-[11px] font-mono text-[#4572a6] truncate">@${escapeHTML(u.username)}</p>
-              <p class="text-[11px] text-[#1a497d] italic truncate mt-0.5">${u.status ? escapeHTML(u.status) : 'No status set'}</p>
+            </div>
+            <div class="flex items-center justify-end gap-1.5 pt-1 border-t border-[#d6ebff] flex-wrap">
+              ${currentUser && !isSelf ? `
+                <button type="button" onclick="toggleFollowUser('${u.id}')" class="aqua-btn ${following ? '' : 'aqua-btn-blue'} !py-1 !px-2.5 !text-[11px]">
+                  ${friends ? 'Friends (Unfollow)' : (following ? 'Following' : (followsYou ? 'Follow Back' : 'Follow'))}
+                </button>
+              ` : ''}
+              ${friends ? `
+                <button type="button" onclick="openDmWithUser('${u.id}')" class="aqua-btn aqua-btn-green !py-1 !px-2.5 !text-[11px]">DM</button>
+              ` : ''}
+              ${isSelf ? `
+                <button type="button" onclick="openMyProfileView()" class="aqua-btn aqua-btn-blue !py-1 !px-2.5 !text-[11px]">My Profile</button>
+              ` : ''}
+              <button type="button" onclick="filterByAuthor('${u.id}')" class="aqua-btn !py-1 !px-2.5 !text-[11px]">Posts</button>
             </div>
           </div>
-          <button type="button" onclick="filterByAuthor('${u.id}')" class="aqua-btn !py-1 !px-2.5 !text-[11px] shrink-0">Posts</button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function renderInbox() {
@@ -2370,6 +2574,42 @@
       `).join('');
     }
 
+    function toggleLikeAnnouncement(annId) {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      const ann = announcements.find(a => a.id === annId);
+      if (!ann) return;
+      if (!Array.isArray(ann.likes)) ann.likes = [];
+      const idx = ann.likes.indexOf(currentUser.id);
+      if (idx === -1) {
+        ann.likes.push(currentUser.id);
+      } else {
+        ann.likes.splice(idx, 1);
+      }
+      saveAnnouncements();
+      renderPinboard();
+    }
+
+    function removeAnnouncementLike(annId, targetUserId) {
+      if (!isStaffUser()) return;
+      const ann = announcements.find(a => a.id === annId);
+      if (!ann || !Array.isArray(ann.likes)) return;
+      ann.likes = ann.likes.filter(uid => uid !== targetUserId);
+      saveAnnouncements();
+      renderPinboard();
+    }
+
+    function clearAllAnnouncementLikes(annId) {
+      if (!isStaffUser()) return;
+      const ann = announcements.find(a => a.id === annId);
+      if (!ann) return;
+      ann.likes = [];
+      saveAnnouncements();
+      renderPinboard();
+    }
+
     function renderPinboard() {
       const container = document.getElementById('pinboard-announcements-list');
       if (announcements.length === 0) {
@@ -2377,16 +2617,51 @@
         return;
       }
 
-      container.innerHTML = announcements.map(ann => `
-        <div class="p-2.5 rounded-lg bg-white/88 border border-[#8abcf0] space-y-1 shadow-xs">
-          <div class="flex items-start justify-between gap-2">
-            <h4 class="text-xs font-bold text-[#073a80]">${escapeHTML(ann.title)}</h4>
-            ${isStaffUser() ? `<button type="button" onclick="deleteAnnouncement('${ann.id}')" class="text-[10px] text-[#c71d0e] font-bold hover:underline shrink-0">Remove</button>` : ''}
+      const staffMode = isStaffUser();
+      container.innerHTML = announcements.map(ann => {
+        const likes = Array.isArray(ann.likes) ? ann.likes : [];
+        const hasLiked = currentUser && likes.includes(currentUser.id);
+
+        let staffLikesHtml = '';
+        if (staffMode && likes.length > 0) {
+          const likerChips = likes.map(uid => {
+            const u = users.find(usr => usr.id === uid);
+            const label = u ? '@' + u.username : 'Unknown User';
+            return `
+              <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#eef7ff] border border-[#9ec8ed] text-[10px] text-[#083b80]">
+                <span>${escapeHTML(label)}</span>
+                <button type="button" onclick="removeAnnouncementLike('${ann.id}', '${uid}')" title="Delete this like" class="text-[#c71d0e] font-bold hover:underline ml-0.5">x</button>
+              </span>
+            `;
+          }).join('');
+          staffLikesHtml = `
+            <div class="pt-1.5 mt-1 border-t border-[#d6ebff] space-y-1">
+              <div class="flex items-center justify-between text-[10px] text-[#356396]">
+                <span class="font-bold">Liked by (${likes.length}):</span>
+                <button type="button" onclick="clearAllAnnouncementLikes('${ann.id}')" class="text-[#c71d0e] font-bold hover:underline">Delete All Likes</button>
+              </div>
+              <div class="flex flex-wrap gap-1">${likerChips}</div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="p-2.5 rounded-lg bg-white/88 border border-[#8abcf0] space-y-1.5 shadow-xs">
+            <div class="flex items-start justify-between gap-2">
+              <h4 class="text-xs font-bold text-[#073a80]">${escapeHTML(ann.title)}</h4>
+              ${staffMode ? `<button type="button" onclick="deleteAnnouncement('${ann.id}')" class="text-[10px] text-[#c71d0e] font-bold hover:underline shrink-0">Remove</button>` : ''}
+            </div>
+            <p class="text-[11px] text-[#143357] whitespace-pre-wrap break-words">${escapeHTML(ann.body)}</p>
+            <div class="flex items-center justify-between gap-2 pt-0.5">
+              <p class="text-[10px] text-[#527fb0]">System Announcement &bull; ${formatTimestamp(ann.createdAt)}</p>
+              <button type="button" onclick="toggleLikeAnnouncement('${ann.id}')" class="aqua-btn ${hasLiked ? 'aqua-btn-blue' : ''} !py-0.5 !px-2 !text-[10px]">
+                <span>&#9829; ${likes.length}</span>
+              </button>
+            </div>
+            ${staffLikesHtml}
           </div>
-          <p class="text-[11px] text-[#143357] whitespace-pre-wrap break-words">${escapeHTML(ann.body)}</p>
-          <p class="text-[10px] text-[#527fb0]">System Announcement &bull; ${formatTimestamp(ann.createdAt)}</p>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function updateTelemetryStats() {
@@ -2408,6 +2683,7 @@
         id: 'ann_' + Date.now(),
         title,
         body,
+        likes: [],
         createdAt: new Date().toISOString()
       });
       saveAnnouncements();
@@ -2493,6 +2769,27 @@
       const select = document.getElementById('staff-notice-recipient');
       select.innerHTML = `<option value="">-- Select Registered User --</option>` +
         users.map(u => `<option value="${u.id}">${escapeHTML(u.displayName)} (@${escapeHTML(u.username)})</option>`).join('');
+
+      const sentNoticesContainer = document.getElementById('staff-sent-notices-list');
+      if (sentNoticesContainer) {
+        if (notices.length === 0) {
+          sentNoticesContainer.innerHTML = `<p class="text-[11px] text-[#4572a6] italic">No system messages have been sent to users yet.</p>`;
+        } else {
+          sentNoticesContainer.innerHTML = notices.map(n => {
+            const recip = users.find(u => u.id === n.recipientId);
+            const recipLabel = recip ? `${recip.displayName} (@${recip.username})` : 'Deleted User';
+            return `
+              <div class="p-2.5 rounded bg-[#fffbe6] border border-[#e0b422] flex items-start justify-between gap-2 text-xs">
+                <div class="min-w-0">
+                  <div class="text-[10px] font-bold text-[#7a5800]">To: ${escapeHTML(recipLabel)} &bull; ${formatTimestamp(n.createdAt)}</div>
+                  <p class="text-[#2b1e00] break-words mt-0.5">Important: ${escapeHTML(n.message)}</p>
+                </div>
+                <button type="button" onclick="deleteStaffSystemNotice('${n.id}')" class="aqua-btn aqua-btn-red !py-0.5 !px-2 !text-[10px] shrink-0">Delete</button>
+              </div>
+            `;
+          }).join('');
+        }
+      }
 
       const blContainer = document.getElementById('blacklist-words-list');
       if (blacklist.length === 0) {
@@ -2723,6 +3020,404 @@
       clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    function deleteStaffSystemNotice(noticeId) {
+      if (!isStaffUser()) return;
+      notices = notices.filter(n => n.id !== noticeId);
+      saveNotices();
+      updateUnreadBadge();
+      renderStaffStudio();
+      if (!document.getElementById('view-inbox').classList.contains('hidden')) renderInbox();
+    }
+
+    // =========================================================================
+    // FOLLOWING, MUTUAL FRIENDS & PRIVATE DIRECT MESSAGES (DMs)
+    // =========================================================================
+    function isFollowingUser(followerId, targetId) {
+      const follower = users.find(u => u.id === followerId);
+      if (!follower || !Array.isArray(follower.following)) return false;
+      return follower.following.includes(targetId);
+    }
+
+    function areFriends(userIdA, userIdB) {
+      if (!userIdA || !userIdB || userIdA === userIdB) return false;
+      return isFollowingUser(userIdA, userIdB) && isFollowingUser(userIdB, userIdA);
+    }
+
+    function getUserRelationships(userId) {
+      const user = users.find(u => u.id === userId);
+      if (!user) return { following: [], followers: [], friends: [] };
+      const followingIds = Array.isArray(user.following) ? user.following : [];
+      const following = users.filter(u => followingIds.includes(u.id));
+      const followers = users.filter(u => Array.isArray(u.following) && u.following.includes(userId));
+      const friends = following.filter(u => Array.isArray(u.following) && u.following.includes(userId));
+      return { following, followers, friends };
+    }
+
+    function toggleFollowUser(targetUserId) {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      if (currentUser.id === targetUserId) return;
+      const target = users.find(u => u.id === targetUserId);
+      if (!target) return;
+
+      if (!Array.isArray(currentUser.following)) currentUser.following = [];
+      const idx = currentUser.following.indexOf(targetUserId);
+      let becameFriends = false;
+
+      if (idx === -1) {
+        currentUser.following.push(targetUserId);
+        if (isFollowingUser(targetUserId, currentUser.id)) {
+          becameFriends = true;
+        }
+      } else {
+        currentUser.following.splice(idx, 1);
+      }
+
+      const uIdx = users.findIndex(u => u.id === currentUser.id);
+      if (uIdx !== -1) users[uIdx].following = [...currentUser.following];
+      saveUsers();
+      refreshAllUI();
+
+      if (becameFriends) {
+        showSystemDialog('New Friend!', `You and ${target.displayName} (@${target.username}) follow each other now — you are friends and can DM each other privately!`);
+      }
+    }
+
+    function openMyProfileView(tab = 'friends') {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      activeProfileTab = tab;
+      switchMainView('my-profile');
+    }
+
+    function setMyProfileTab(tab) {
+      activeProfileTab = tab;
+      renderMyProfile();
+    }
+
+    function saveInlineProfileDetails(event) {
+      event.preventDefault();
+      if (!currentUser) return;
+      const bioVal = document.getElementById('profile-view-bio-input').value.trim();
+      const statusVal = document.getElementById('profile-view-status-input').value.trim();
+      const avatarUrlVal = document.getElementById('profile-view-avatar-url').value.trim();
+
+      const blocked = containsBlacklistedWord(bioVal) || containsBlacklistedWord(statusVal);
+      if (blocked) {
+        showSystemDialog('Blocked Word', 'Your bio or status contains a word restricted by the platform blacklist.');
+        return;
+      }
+
+      currentUser.bio = bioVal;
+      currentUser.status = statusVal;
+      if (avatarUrlVal) {
+        currentUser.avatar = avatarUrlVal;
+      }
+
+      const idx = users.findIndex(u => u.id === currentUser.id);
+      if (idx !== -1) users[idx] = { ...currentUser };
+      saveUsers();
+      refreshAllUI();
+      showSystemDialog('Profile Saved', 'Your profile picture, bio, and status have been updated.');
+    }
+
+    function handleProfileViewAvatarFile(event) {
+      if (!currentUser) return;
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentUser.avatar = e.target.result;
+        const idx = users.findIndex(u => u.id === currentUser.id);
+        if (idx !== -1) users[idx].avatar = currentUser.avatar;
+        saveUsers();
+        refreshAllUI();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderMyProfile() {
+      const container = document.getElementById('my-profile-container');
+      if (!container) return;
+      if (!currentUser) {
+        container.innerHTML = `<div class="p-5 rounded-lg bg-white/80 border border-[#9ac6ed] text-center text-xs text-[#356396]">Please log in to view your profile.</div>`;
+        return;
+      }
+
+      const rels = getUserRelationships(currentUser.id);
+      const listToShow = activeProfileTab === 'followers'
+        ? rels.followers
+        : (activeProfileTab === 'following' ? rels.following : rels.friends);
+
+      container.innerHTML = `
+        <div class="p-4 rounded-lg bg-white/88 border border-[#8abcf0] space-y-3 shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <img src="${currentUser.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(currentUser.displayName)}" class="w-16 h-16 rounded-xl border-2 border-[#3b93eb] object-cover shrink-0 bg-[#e6f4ff] shadow" />
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h2 class="text-base sm:text-lg font-bold text-[#073778] truncate">${escapeHTML(currentUser.displayName)}</h2>
+                  ${getRoleBadgeHTML(currentUser.role)}
+                </div>
+                <p class="text-xs font-mono text-[#4572a6]">@${escapeHTML(currentUser.username)}</p>
+                <p class="text-xs text-[#1a497d] italic mt-0.5">${currentUser.status ? escapeHTML(currentUser.status) : 'No status set'}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center bg-[#eef7ff] p-2 rounded-lg border border-[#a8cff2] shrink-0">
+              <button type="button" onclick="setMyProfileTab('friends')" class="px-2.5 py-1 rounded ${activeProfileTab === 'friends' ? 'bg-[#cce7ff] font-bold' : 'hover:bg-white/70'}">
+                <div class="text-sm font-bold text-[#073778]">${rels.friends.length}</div>
+                <div class="text-[10px] text-[#3c6ba1]">Friends</div>
+              </button>
+              <button type="button" onclick="setMyProfileTab('followers')" class="px-2.5 py-1 rounded border-x border-[#c5e1fa] ${activeProfileTab === 'followers' ? 'bg-[#cce7ff] font-bold' : 'hover:bg-white/70'}">
+                <div class="text-sm font-bold text-[#073778]">${rels.followers.length}</div>
+                <div class="text-[10px] text-[#3c6ba1]">Followers</div>
+              </button>
+              <button type="button" onclick="setMyProfileTab('following')" class="px-2.5 py-1 rounded ${activeProfileTab === 'following' ? 'bg-[#cce7ff] font-bold' : 'hover:bg-white/70'}">
+                <div class="text-sm font-bold text-[#073778]">${rels.following.length}</div>
+                <div class="text-[10px] text-[#3c6ba1]">Following</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-2.5 rounded bg-[#f4faff] border border-[#c5e1fa] text-xs text-[#143357]">
+            <span class="font-bold text-[#0c4185]">Bio:</span>
+            <span>${currentUser.bio ? escapeHTML(currentUser.bio) : '<span class="italic text-[#527fb0]">No bio added yet.</span>'}</span>
+          </div>
+
+          <!-- Quick Edit Profile Picture, Status & Bio -->
+          <form onsubmit="saveInlineProfileDetails(event)" class="pt-2 border-t border-[#d6ebff] space-y-2.5">
+            <h3 class="text-xs font-bold text-[#073a80]">Customize Your Profile Picture, Status &amp; Bio</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[11px] font-bold text-[#0c4185] mb-1">Upload Profile Picture:</label>
+                <input type="file" accept="image/*" onchange="handleProfileViewAvatarFile(event)" class="aero-input !text-xs !py-1" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-[#0c4185] mb-1">Or Profile Picture URL:</label>
+                <input type="url" id="profile-view-avatar-url" value="${currentUser.avatar && !currentUser.avatar.startsWith('data:') ? escapeHTML(currentUser.avatar) : ''}" placeholder="https://..." class="aero-input !text-xs !py-1" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-[#0c4185] mb-1">Status:</label>
+              <input type="text" id="profile-view-status-input" maxlength="80" value="${escapeHTML(currentUser.status || '')}" placeholder="Write your custom status..." class="aero-input !text-xs !py-1.5" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-[#0c4185] mb-1">Bio:</label>
+              <textarea id="profile-view-bio-input" rows="2" maxlength="240" placeholder="Write a short bio about yourself..." class="aero-input !text-xs resize-none">${escapeHTML(currentUser.bio || '')}</textarea>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="aqua-btn aqua-btn-green">Save Profile Changes</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Connections List (Friends / Followers / Following) -->
+        <div class="p-3.5 rounded-lg bg-white/88 border border-[#8abcf0] space-y-2.5 shadow-xs">
+          <div class="flex flex-wrap items-center gap-2 border-b border-[#c5e1fa] pb-2">
+            <button type="button" onclick="setMyProfileTab('friends')" class="aqua-btn ${activeProfileTab === 'friends' ? 'aqua-btn-blue' : ''} !py-1 !px-3 !text-xs">
+              Friends (${rels.friends.length})
+            </button>
+            <button type="button" onclick="setMyProfileTab('followers')" class="aqua-btn ${activeProfileTab === 'followers' ? 'aqua-btn-blue' : ''} !py-1 !px-3 !text-xs">
+              Followers (${rels.followers.length})
+            </button>
+            <button type="button" onclick="setMyProfileTab('following')" class="aqua-btn ${activeProfileTab === 'following' ? 'aqua-btn-blue' : ''} !py-1 !px-3 !text-xs">
+              Following (${rels.following.length})
+            </button>
+          </div>
+
+          <div class="space-y-2">
+            ${listToShow.length === 0 ? `
+              <p class="text-xs text-[#4572a6] italic py-3 text-center">
+                ${activeProfileTab === 'friends' ? 'No friends yet. Follow someone who follows you back to become friends!' : (activeProfileTab === 'followers' ? 'Nobody is following you yet.' : 'You are not following anyone yet.')}
+              </p>
+            ` : listToShow.map(person => {
+              const iFollow = isFollowingUser(currentUser.id, person.id);
+              const friend = areFriends(currentUser.id, person.id);
+              return `
+                <div class="p-2.5 rounded bg-[#f2f8ff] border border-[#b5d8f7] flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <img src="${person.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(person.displayName)}" class="w-9 h-9 rounded-lg border border-[#3e95eb] object-cover shrink-0" />
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="font-bold text-xs text-[#073778] truncate">${escapeHTML(person.displayName)}</span>
+                        ${getRoleBadgeHTML(person.role)}
+                      </div>
+                      <p class="text-[11px] font-mono text-[#4572a6] truncate">@${escapeHTML(person.username)}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    ${friend ? `<button type="button" onclick="openDmWithUser('${person.id}')" class="aqua-btn aqua-btn-green !py-0.5 !px-2 !text-[11px]">DM</button>` : ''}
+                    <button type="button" onclick="toggleFollowUser('${person.id}')" class="aqua-btn ${iFollow ? '' : 'aqua-btn-blue'} !py-0.5 !px-2 !text-[11px]">
+                      ${iFollow ? 'Unfollow' : 'Follow Back'}
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openDmWithUser(partnerId) {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      if (!areFriends(currentUser.id, partnerId)) {
+        showSystemDialog('Friends Only', 'You can only send private DMs when you and this user follow each other.');
+        return;
+      }
+      activeDmPartnerId = partnerId;
+      switchMainView('friends-dms');
+    }
+
+    function sendPrivateDM(event) {
+      event.preventDefault();
+      if (!currentUser || !activeDmPartnerId) return;
+      if (!areFriends(currentUser.id, activeDmPartnerId)) {
+        showSystemDialog('Not Friends', 'Both users must follow each other to send private DMs.');
+        return;
+      }
+
+      const input = document.getElementById('dm-message-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const blocked = containsBlacklistedWord(text);
+      if (blocked) {
+        showSystemDialog('Message Blocked', 'Your message contains a word restricted by the platform blacklist.');
+        return;
+      }
+
+      directMessages.push({
+        id: 'dm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        senderId: currentUser.id,
+        recipientId: activeDmPartnerId,
+        text: text,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+      saveDirectMessages();
+      input.value = '';
+      renderFriendsAndDMs();
+    }
+
+    function renderFriendsAndDMs() {
+      const container = document.getElementById('friends-dms-container');
+      if (!container) return;
+
+      if (!currentUser) {
+        container.innerHTML = `<div class="p-5 rounded-lg bg-white/80 border border-[#9ac6ed] text-center text-xs text-[#356396]">Please log in to view your friends and send private DMs.</div>`;
+        return;
+      }
+
+      const rels = getUserRelationships(currentUser.id);
+      const friendsList = rels.friends;
+
+      if (friendsList.length === 0) {
+        activeDmPartnerId = '';
+        container.innerHTML = `
+          <div class="p-5 rounded-lg bg-white/85 border border-[#9ac6ed] text-center space-y-2">
+            <p class="text-sm font-bold text-[#093e85]">No Mutual Friends Yet</p>
+            <p class="text-xs text-[#376699]">Follow members in the Member Directory or on posts. When someone you follow follows you back, you become friends and unlock private DMs here!</p>
+            <button type="button" onclick="switchMainView('members')" class="aqua-btn aqua-btn-blue mt-1">Browse Member Directory</button>
+          </div>
+        `;
+        return;
+      }
+
+      if (!activeDmPartnerId || !friendsList.some(f => f.id === activeDmPartnerId)) {
+        activeDmPartnerId = friendsList[0].id;
+      }
+
+      const partner = friendsList.find(f => f.id === activeDmPartnerId);
+
+      // Mark incoming DMs from active partner as read
+      let markedRead = false;
+      directMessages.forEach(m => {
+        if (m.senderId === activeDmPartnerId && m.recipientId === currentUser.id && !m.read) {
+          m.read = true;
+          markedRead = true;
+        }
+      });
+      if (markedRead) {
+        saveDirectMessages();
+        updateUnreadBadge();
+      }
+
+      const thread = directMessages.filter(m =>
+        (m.senderId === currentUser.id && m.recipientId === activeDmPartnerId) ||
+        (m.senderId === activeDmPartnerId && m.recipientId === currentUser.id)
+      );
+
+      container.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <!-- Friends List Sidebar -->
+          <div class="sm:col-span-4 space-y-1.5 border-b sm:border-b-0 sm:border-r border-[#b8dbf7] pb-2.5 sm:pb-0 sm:pr-2.5">
+            <p class="text-[11px] font-bold text-[#0c4185] uppercase">Your Friends (${friendsList.length})</p>
+            <div class="space-y-1 max-h-80 overflow-y-auto">
+              ${friendsList.map(f => {
+                const isSelected = f.id === activeDmPartnerId;
+                const unreadFromFriend = directMessages.filter(m => m.senderId === f.id && m.recipientId === currentUser.id && !m.read).length;
+                return `
+                  <button type="button" onclick="openDmWithUser('${f.id}')" class="w-full text-left p-2 rounded-lg border flex items-center justify-between gap-2 transition ${isSelected ? 'bg-[#cce7ff] border-[#1877e8] font-bold' : 'bg-white/80 border-[#a8cff2] hover:bg-[#e8f4ff]'}">
+                    <div class="flex items-center gap-2 min-w-0">
+                      <img src="${f.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(f.displayName)}" class="w-7 h-7 rounded border border-[#3e95eb] object-cover shrink-0" />
+                      <div class="min-w-0">
+                        <div class="text-xs text-[#073778] truncate">${escapeHTML(f.displayName)}</div>
+                        <div class="text-[10px] font-mono text-[#4572a6] truncate">@${escapeHTML(f.username)}</div>
+                      </div>
+                    </div>
+                    ${unreadFromFriend > 0 ? `<span class="px-1.5 py-0.2 bg-[#e02414] text-white text-[10px] rounded-full font-bold">${unreadFromFriend}</span>` : ''}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Active Private Chat Window -->
+          <div class="sm:col-span-8 flex flex-col justify-between bg-white/88 rounded-lg border border-[#8abcf0] p-3 min-h-[300px]">
+            <div class="flex items-center justify-between gap-2 border-b border-[#cde5fa] pb-2 mb-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <img src="${partner.avatar || DEFAULT_AVATAR_SVG}" alt="${escapeHTML(partner.displayName)}" class="w-8 h-8 rounded-lg border border-[#3e95eb] object-cover shrink-0" />
+                <div class="min-w-0">
+                  <div class="text-xs font-bold text-[#073778] truncate">${escapeHTML(partner.displayName)} <span class="font-mono font-normal text-[#4572a6]">(@${escapeHTML(partner.username)})</span></div>
+                  <div class="text-[10px] text-[#198c0c] font-semibold">Private Friend Chat</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-1 space-y-2 max-h-64 overflow-y-auto pr-1 mb-2.5">
+              ${thread.length === 0 ? `
+                <p class="text-xs text-[#4572a6] italic text-center py-8">No private messages with ${escapeHTML(partner.displayName)} yet. Say hi!</p>
+              ` : thread.map(msg => {
+                const mine = msg.senderId === currentUser.id;
+                return `
+                  <div class="flex flex-col ${mine ? 'items-end' : 'items-start'}">
+                    <div class="max-w-[82%] px-3 py-1.5 rounded-lg text-xs break-words shadow-2xs ${mine ? 'bg-[#1877e8] text-white' : 'bg-[#eef7ff] border border-[#b5d8f7] text-[#0f2947]'}">
+                      ${escapeHTML(msg.text)}
+                    </div>
+                    <span class="text-[9px] text-[#527fb0] mt-0.5">${formatTimestamp(msg.createdAt)}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <form onsubmit="sendPrivateDM(event)" class="flex gap-1.5 pt-1 border-t border-[#cde5fa]">
+              <input type="text" id="dm-message-input" placeholder="Send a private message to ${escapeHTML(partner.displayName)}..." class="aero-input !py-1.5 !text-xs" required />
+              <button type="submit" class="aqua-btn aqua-btn-green !py-1 !px-3 shrink-0">Send</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
     function refreshAllUI() {
       applySiteConfigToDOM();
       renderAccountSidebar();
@@ -2732,6 +3427,8 @@
       updateTelemetryStats();
       if (!document.getElementById('view-members').classList.contains('hidden')) renderMembersDirectory();
       if (!document.getElementById('view-inbox').classList.contains('hidden')) renderInbox();
+      if (!document.getElementById('view-my-profile').classList.contains('hidden')) renderMyProfile();
+      if (!document.getElementById('view-friends-dms').classList.contains('hidden')) renderFriendsAndDMs();
       if (!document.getElementById('view-staff').classList.contains('hidden')) renderStaffStudio();
       if (!document.getElementById('view-owner-customizer').classList.contains('hidden')) renderOwnerCustomizer();
     }
